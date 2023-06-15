@@ -42,7 +42,7 @@ export default async function email(
           request.method === "POST"
             ? JSON.stringify(request.body ?? {})
             : undefined,
-       }),
+      }),
     }),
     // Save in database
     adapter.createVerificationToken({

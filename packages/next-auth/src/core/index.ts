@@ -245,7 +245,7 @@ export async function AuthHandler<
             query: req.query,
             body: req.body,
             options,
-            request: req
+            request: req,
           })
           if (signin.cookies) cookies.push(...signin.cookies)
           return { ...signin, cookies }
