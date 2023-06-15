@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto"
 import { hashToken } from "../utils"
-import type { InternalOptions } from "../../types"
+import type { InternalOptions, RequestInternal } from "../../types"
 
 /**
  * Starts an e-mail login flow, by generating a token,
@@ -8,7 +8,8 @@ import type { InternalOptions } from "../../types"
  */
 export default async function email(
   identifier: string,
-  options: InternalOptions<"email">
+  options: InternalOptions<"email">,
+  request: RequestInternal
 ): Promise<string> {
   const { url, adapter, provider, callbackUrl, theme } = options
   // Generate token
@@ -34,6 +35,14 @@ export default async function email(
       url: _url,
       provider,
       theme,
+      request: new Request(request.url, {
+        headers: request.headers,
+        method: request.method,
+        body:
+          request.method === "POST"
+            ? JSON.stringify(request.body ?? {})
+            : undefined,
+       }),
     }),
     // Save in database
     adapter.createVerificationToken({
