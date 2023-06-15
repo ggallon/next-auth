@@ -10,7 +10,6 @@ export default async function signin(params: {
   options: InternalOptions<"oauth" | "email">
   query: RequestInternal["query"]
   body: RequestInternal["body"]
-  request: RequestInternal
 }): Promise<ResponseInternal> {
   const { options, query, body } = params
   const { url, callbacks, logger, provider } = options
@@ -90,7 +89,7 @@ export default async function signin(params: {
     }
 
     try {
-      const redirect = await emailSignin(email, options, request)
+      const redirect = await emailSignin(email, options)
       return { redirect }
     } catch (error) {
       logger.error("SIGNIN_EMAIL_ERROR", { error, providerId: provider.id })
